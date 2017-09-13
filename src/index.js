@@ -51,12 +51,8 @@ function emulateClick(target) {
  * @param {function} fn - функция, которую нужно вызвать при клике на элемент BUTTON внутри target
  */
 function delegate(target, fn) {
-    var arr = target.children;
-
-    for (var i = 0; i < arr.length; i++) {
-        if (arr[i].tagName === 'BUTTON') {
-            arr[i].addEventListener('click', fn)
-        }
+    target.onclick = function(e){
+        if (e.target.tagName === 'BUTTON') fn();
     }
 }
 
