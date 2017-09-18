@@ -36,7 +36,40 @@ let homeworkContainer = document.querySelector('#homework-container');
  * @return {Promise<Array<{name: string}>>}
  */
 function loadTowns() {
+    return new Promise(function(resolve, reject) {
+        var req = new XMLHttpRequest();
+        req.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json');
+        req.onload = function() {
+            if (this.status == 200) {
+                var res = JSON.parse(this.responseText);
+                res.sort(function(a,b) {
+                    if (a.name > b.name) {
+                        return 1;
+                    } else if (a.name < b.name) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                resolve(res);
+            } else {
+                var error = new Error(this.statusText);
+                error.code = this.status;
+                reject(error);
+            }
+    }
+        req.send(null);
+    });
 }
+
+var towns = [];
+
+loadTowns().then(function(response) {
+    loadingBlock.style.display = 'none';
+    filterBlock.style.display = 'block';
+    towns = response;
+    return towns;
+});
 
 /**
  * Функция должна проверять встречается ли подстрока chunk в строке full
@@ -52,6 +85,13 @@ function loadTowns() {
  * @return {boolean}
  */
 function isMatching(full, chunk) {
+    full = full.toLowerCase();
+    chunk = chunk.toLowerCase();
+    if (~full.indexOf(chunk)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 let loadingBlock = homeworkContainer.querySelector('#loading-block');
@@ -61,6 +101,11 @@ let filterResult = homeworkContainer.querySelector('#filter-result');
 let townsPromise;
 
 filterInput.addEventListener('keyup', function() {
+    for (var i = 0; i < towns.length; i++) {
+        if (isMatching(towns[i].name, filterInput.value)) {
+            filterResult.innerHTML = towns[i].name;
+        }
+    }
 });
 
 export {

@@ -9,7 +9,7 @@
 function delayPromise(seconds) {
     var miliseconds = seconds * 1000;
     return new Promise(function(resolve, reject) {
-        setTimeout(function() { 
+        setTimeout(function() {
             resolve();
         }, miliseconds);
     });
@@ -29,16 +29,16 @@ function loadAndSortTowns() {
         req.onload = function() {
             if (this.status == 200) {
                 var res = JSON.parse(this.responseText);
-                var arr = [];
-                for (var i = 0; i < res.length; i++) {
-                    arr.push(res[i].name);
-                }
-                arr = arr.sort();
-                var newArr = [];
-                for (var i = 0; i < arr.length; i++) {
-                    newArr[i] = {name: arr[i]};
-                }
-                resolve(newArr);
+                res.sort(function(a,b) {
+                    if (a.name > b.name) {
+                        return 1;
+                    } else if (a.name < b.name) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+                resolve(res);
             } else {
                 var error = new Error(this.statusText);
                 error.code = this.status;
