@@ -3,7 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <title>{{htmlWebpackPlugin.options.title}}</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
 </head>
 <body>
+	<div id="map">
+	</div>
+
+	<div id="window_comment" class="overlay">
+		<div id="wc__header" class="cf">
+				<div id="adress"></div>
+				<button id="button__close">+</button>
+		</div>
+			<div id="comments">Отзывов пока нет...</div>
+			<div id="form__wrap" class="cf">
+				<h3 id="form__header">Ваш отзыв</h3>
+				<input type="text" id="input__name" class="input" placeholder="Ваше имя">
+				<input type="text" id="input__place" class="input" placeholder="Укажите место">
+				<textarea name="otziv" id="input__text" class="input" cols="30" rows="5" placeholder="Поделитесь впечатлениями"></textarea>
+				<button id="button__add"><b>Добавить</b></button>
+			</div>
+	</div>
+
+	<script type="text/javascript" src ="src/index.js"></script>
 </body>
 </html>
